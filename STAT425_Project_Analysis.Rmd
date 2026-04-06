@@ -1,0 +1,246 @@
+---
+title: "STAT 425 Final Project - Statistical Analysis"
+author: "Zoya Malik, Manreet Kaur Jhattu, Lachlan Findlay"
+date: "April 2026"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(mosaic)
+library(car)
+options(scipen = 999)
+```
+
+---
+
+# 1. Load and Inspect the Data
+
+```{r}
+# read in the combined dataset
+typing.df <- read.csv("data/typing_combined.csv")
+
+# convert treatment and block to factors
+typing.df$Music  <- as.factor(typing.df$Music)
+typing.df$Tester <- as.factor(typing.df$Tester)
+
+str(typing.df)
+```
+
+```{r}
+# quick look at the data
+head(typing.df, 10)
+```
+
+---
+
+# 2. Summary Statistics
+
+Summary statistics for WPM broken down by Music condition (the treatment):
+
+```{r}
+favstats(WPM ~ Music, data = typing.df)
+```
+
+Summary statistics for WPM broken down by Tester (the block):
+
+```{r}
+favstats(WPM ~ Tester, data = typing.df)
+```
+
+---
+
+# 3. Data Visualization
+
+## Boxplots by Music Condition
+
+```{r}
+ggplot(data = typing.df, aes(x = Music, y = WPM)) +
+  geom_boxplot(col = "red", fill = "light blue") +
+  xlab("Auditory Condition") +
+  ylab("Words Per Minute (WPM)") +
+  ggtitle("Boxplots:", subtitle = "Typing Speed Across Auditory Conditions") +
+  coord_flip()
+```
+
+## Boxplots by Tester (Block)
+
+```{r}
+ggplot(data = typing.df, aes(x = Tester, y = WPM)) +
+  geom_boxplot(col = "red", fill = "light blue") +
+  xlab("Tester") +
+  ylab("Words Per Minute (WPM)") +
+  ggtitle("Boxplots:", subtitle = "Typing Speed Across Testers") +
+  coord_flip()
+```
+
+---
+
+# 4. The Mathematical Model
+
+We are carrying out a **Complete Randomized Block Design (CRBD)**. The mathematical model is:
+
+$$Y_{ij} = \mu + \tau_i + \beta_j + \varepsilon_{ij}$$
+
+where:
+
+- $Y_{ij}$ is the mean WPM for the $i$th auditory condition and $j$th tester
+- $\mu$ is the overall mean WPM
+- $\tau_i$ is the effect of the $i$th auditory condition ($i = 1, 2, 3, 4$ for Lo-Fi, Silence, Upbeat, White Noise), with $\sum_{i=1}^{4} \tau_i = 0$
+- $\beta_j$ is the effect of the $j$th tester/block ($j = 1, 2, 3$ for Manreet, Lachlan, Zoya), with $\sum_{j=1}^{3} \beta_j = 0$
+- $\varepsilon_{ij} \overset{iid}{\sim} N(0, \sigma^2)$ are the random error terms
+
+Both the auditory condition (treatment) and the tester (block) are fixed factors, as all four music conditions were deliberately chosen and the three testers are the specific individuals in the study.
+
+---
+
+# 5. Checking Model Conditions
+
+Before running the ANOVA, we check the three conditions of the CRBD model normality, equal variance, and additivity.
+
+## Fit the model and extract residuals
+
+```{r}
+# fit the CRBD model: treatment + block
+typing.aov <- aov(WPM ~ Music + Tester, data = typing.df)
+
+# extract residuals and fitted values
+e_terms     <- residuals(typing.aov)
+fitted_vals <- fitted(typing.aov)
+
+# add to data frame for plotting
+typing.diag.df <- cbind(typing.df, e_terms, fitted_vals)
+```
+
+## Condition 1: Normality of Residuals
+
+```{r}
+# normal probability plot of residuals
+ggplot(data = typing.diag.df, aes(sample = e_terms)) +
+  stat_qq(size = 2, col = "blue") +
+  stat_qqline(col = "red") +
+  ggtitle("Normal Probability Plot of the Residuals")
+```
+
+```{r}
+# Shapiro-Wilk test for normality
+shapiro.test(e_terms)
+```
+
+## Condition 2: Equal Variance
+
+```{r}
+# residual plot - residuals vs fitted values
+ggplot(data = typing.diag.df, aes(x = fitted_vals, y = e_terms)) +
+  geom_point(size = 2, col = "blue") +
+  xlab("Fitted Values") +
+  ylab("Residuals") +
+  geom_hline(yintercept = 0, linetype = "dashed", col = "red") +
+  ggtitle("Residual Plot")
+```
+
+```{r}
+# Levene's test for equal variance across Music conditions
+leveneTest(WPM ~ Music, data = typing.df)
+```
+
+## Condition 3: Additivity (No Interaction Between Treatment and Block)
+
+```{r}
+# interaction plot - Music on x-axis, Tester as trace
+interaction.plot(x.factor   = typing.df$Music,
+                 trace.factor = typing.df$Tester,
+                 response    = typing.df$WPM,
+                 type        = "b",
+                 pch         = c(1, 2, 4),
+                 col         = c("red", "blue", "darkgreen"),
+                 lwd         = 2,
+                 xlab        = "Auditory Condition",
+                 ylab        = "Mean WPM",
+                 trace.label = "Tester",
+                 main        = "Interaction Plot: Auditory Condition x Tester")
+```
+
+---
+
+# 6. CRBD Analysis of Variance
+
+## Statistical Hypotheses
+
+**For the Auditory Condition (Treatment) Effect:**
+
+$$H_0: \tau_1 = \tau_2 = \tau_3 = \tau_4 = 0 \quad \text{(no auditory condition effect on WPM)}$$
+$$H_A: \text{At least one } \tau_i \neq 0$$
+
+**For the Tester (Block) Effect:**
+
+$$H_0: \beta_1 = \beta_2 = \beta_3 = 0 \quad \text{(no tester effect on WPM)}$$
+$$H_A: \text{At least one } \beta_j \neq 0$$
+
+## ANOVA Table
+
+```{r}
+# CRBD ANOVA: treatment + block
+summary(typing.aov)
+```
+
+## Extract F-statistics and P-values
+
+```{r}
+# extract results for the music condition effect
+anova.results <- summary(typing.aov)[[1]]
+
+F_music <- anova.results["Music", "F value"]
+p_music <- anova.results["Music", "Pr(>F)"]
+cat("F_Obs for Music Condition:", round(F_music, 4), "\n")
+cat("P-value for Music Condition:", round(p_music, 4), "\n")
+```
+
+```{r}
+# extract results for the tester (block) effect
+F_tester <- anova.results["Tester", "F value"]
+p_tester <- anova.results["Tester", "Pr(>F)"]
+cat("F_Obs for Tester:", round(F_tester, 4), "\n")
+cat("P-value for Tester:", round(p_tester, 4), "\n")
+```
+
+---
+
+# 7. Multiple Comparisons - Tukey HSD
+
+If the auditory condition effect is significant, we use the Tukey HSD method to determine which specific conditions differ from one another.
+
+```{r}
+# Tukey HSD on the Music (treatment) factor
+tukey.music <- TukeyHSD(typing.aov, "Music", conf.level = 0.95)
+tukey.music
+```
+
+```{r}
+# plot the Tukey HSD results
+plot(tukey.music, las = 1)
+```
+
+```{r}
+# group means by Music condition, sorted descending
+sort(favstats(WPM ~ Music, data = typing.df)$mean, decreasing = TRUE)
+```
+
+---
+
+# 8. Summary of Results
+
+```{r}
+# overall mean WPM by condition and tester
+tapply(typing.df$WPM, list(typing.df$Music, typing.df$Tester), mean)
+```
+
+```{r}
+# marginal means by Music condition
+tapply(typing.df$WPM, typing.df$Music, mean)
+```
+
+```{r}
+# marginal means by Tester
+tapply(typing.df$WPM, typing.df$Tester, mean)
+```

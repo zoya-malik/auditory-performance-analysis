@@ -1,0 +1,73 @@
+Date,Tester,Music,Replication,Trial,WPM,Accuracy
+March 18th,Jhattu,Upbeat,1,1,60,95
+March 18th,Jhattu,Upbeat,1,2,71,96
+March 18th,Jhattu,Upbeat,1,3,64,95
+March 19th,Jhattu,Silence,1,1,61,96
+March 19th,Jhattu,Silence,1,2,69,95
+March 19th,Jhattu,Silence,1,3,67,95
+March 20th,Jhattu,White Noise,1,1,65,95
+March 20th,Jhattu,White Noise,1,2,65,94
+March 20th,Jhattu,White Noise,1,3,69,96
+March 21st,Jhattu,Lo-Fi,1,1,62,94
+March 21st,Jhattu,Lo-Fi,1,2,64,94
+March 21st,Jhattu,Lo-Fi,1,3,70,96
+March 22nd,Jhattu,White Noise,2,1,64,94
+March 22nd,Jhattu,White Noise,2,2,61,94
+March 22nd,Jhattu,White Noise,2,3,68,95
+March 23rd,Jhattu,Silence,2,1,64,96
+March 23rd,Jhattu,Silence,2,2,63,96
+March 23rd,Jhattu,Silence,2,3,72,94
+March 24th,Jhattu,Lo-Fi,2,1,65,93
+March 24th,Jhattu,Lo-Fi,2,2,67,95
+March 24th,Jhattu,Lo-Fi,2,3,68,96
+March 25th,Jhattu,Upbeat,2,1,64,94
+March 25th,Jhattu,Upbeat,2,2,62,97
+March 25th,Jhattu,Upbeat,2,3,64,94
+March 20th,Lachlan,Upbeat,1,1,50,94
+March 20th,Lachlan,Upbeat,1,2,53,95
+March 20th,Lachlan,Upbeat,1,3,63,96
+March 21st,Lachlan,Silence,1,1,70,98
+March 21st,Lachlan,Silence,1,2,58,95
+March 21st,Lachlan,Silence,1,3,58,94
+March 23rd,Lachlan,White Noise,1,1,55,96
+March 23rd,Lachlan,White Noise,1,2,67,96
+March 23rd,Lachlan,White Noise,1,3,61,95
+March 24th,Lachlan,Lo-Fi,1,1,64,96
+March 24th,Lachlan,Lo-Fi,1,2,63,96
+March 24th,Lachlan,Lo-Fi,1,3,60,96
+March 25th,Lachlan,Lo-Fi,2,1,68,97
+March 25th,Lachlan,Lo-Fi,2,2,58,94
+March 25th,Lachlan,Lo-Fi,2,3,54,92
+March 26th,Lachlan,White Noise,2,1,57,95
+March 26th,Lachlan,White Noise,2,2,57,94
+March 26th,Lachlan,White Noise,2,3,71,96
+March 27th,Lachlan,Silence,2,1,58,94
+March 27th,Lachlan,Silence,2,2,72,98
+March 27th,Lachlan,Silence,2,3,65,94
+March 28th,Lachlan,Upbeat,2,1,61,96
+March 28th,Lachlan,Upbeat,2,2,56,95
+March 28th,Lachlan,Upbeat,2,3,64,96
+March 18th,Zoya,Lo-Fi,1,1,68,95
+March 18th,Zoya,Lo-Fi,1,2,72,96
+March 18th,Zoya,Lo-Fi,1,3,70,95
+March 19th,Zoya,Silence,1,1,71,96
+March 19th,Zoya,Silence,1,2,68,95
+March 19th,Zoya,Silence,1,3,73,97
+March 20th,Zoya,White Noise,1,1,65,94
+March 20th,Zoya,White Noise,1,2,67,95
+March 20th,Zoya,White Noise,1,3,63,94
+March 21st,Zoya,Upbeat,1,1,62,93
+March 21st,Zoya,Upbeat,1,2,65,95
+March 21st,Zoya,Upbeat,1,3,60,94
+March 23rd,Zoya,White Noise,2,1,66,95
+March 23rd,Zoya,White Noise,2,2,64,94
+March 23rd,Zoya,White Noise,2,3,68,96
+March 24th,Zoya,Upbeat,2,1,63,94
+March 24th,Zoya,Upbeat,2,2,67,96
+March 24th,Zoya,Upbeat,2,3,61,93
+March 26th,Zoya,Lo-Fi,2,1,70,96
+March 26th,Zoya,Lo-Fi,2,2,67,95
+March 26th,Zoya,Lo-Fi,2,3,72,97
+March 28th,Zoya,Silence,2,1,69,95
+March 28th,Zoya,Silence,2,2,74,97
+March 28th,Zoya,Silence,2,3,71,96
